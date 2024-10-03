@@ -1,22 +1,45 @@
-import { CirclePlus, House, LayoutDashboard, LogOut } from 'lucide-react'
+'use client'
+import React, { useState, useEffect } from 'react'
+import {
+  CirclePlus,
+  House,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  X,
+} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-interface Link {
+interface NavLink {
   href: string
   icon: React.FC<React.SVGProps<SVGSVGElement>>
   text: string
 }
 
-const navLinks: Link[] = [
+const navLinks: NavLink[] = [
   { href: '/', icon: House, text: 'Inicio' },
   { href: '/dashboard', icon: LayoutDashboard, text: 'Dashboard' },
   { href: '/dashboard/new-entry', icon: CirclePlus, text: 'Añadir' },
 ]
 
 export default function Nav() {
-  return (
-    <nav className='flex flex-col items-center justify-between flex-wrap p-6 rounded m-6 border border-zinc-400 min-h-[calc(100vh-3rem)]'>
+  const [isOpen, setIsOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkIsMobile()
+    window.addEventListener('resize', checkIsMobile)
+    return () => window.removeEventListener('resize', checkIsMobile)
+  }, [])
+
+  const toggleMenu = () => setIsOpen(!isOpen)
+
+  const NavContent = () => (
+    <>
       <div className='flex flex-col gap-4 items-center'>
         <header className='flex items-center gap-4'>
           <Image
@@ -34,6 +57,7 @@ export default function Nav() {
               <Link
                 className='flex align-center gap-2 transition-all hover:gap-3 hover:font-bold'
                 href={link.href}
+                onClick={() => isMobile && setIsOpen(false)}
               >
                 <link.icon strokeWidth='1.25' />
                 {link.text}
@@ -48,6 +72,31 @@ export default function Nav() {
           Cerrar sesión
         </button>
       </div>
-    </nav>
+    </>
+  )
+
+  return (
+    <>
+      {isMobile && (
+        <button
+          onClick={toggleMenu}
+          className='fixed top-4 left-4 z-50 p-2 bg-white rounded shadow-md'
+        >
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      )}
+      <nav
+        className={`
+        ${
+          isMobile
+            ? 'flex flex-col items-center justify-between fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 pt-20 pb-10'
+            : 'flex flex-col items-center justify-between flex-wrap p-6 rounded m-6 bg-white min-h-[calc(100vh-3rem)]'
+        }
+        ${isMobile && !isOpen ? '-translate-x-full' : 'translate-x-0'}
+      `}
+      >
+        {(!isMobile || isOpen) && <NavContent />}
+      </nav>
+    </>
   )
 }
