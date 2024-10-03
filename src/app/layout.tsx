@@ -1,22 +1,16 @@
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
-
-const aptos = localFont({
-  src: './fonts/aptos.ttf',
-  variable: '--font-aptos',
-  weight: '100 900',
-})
-
-const aptosBold = localFont({
-  src: './fonts/aptos-bold.ttf',
-  variable: '--font-aptos-bold',
-  weight: '100 900',
-})
 
 export const metadata: Metadata = {
   title: 'Hours Counter',
   description: 'Application to count your working hours',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -26,9 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${aptos.variable} ${aptosBold.variable} antialiased`}>
-        {children}
-      </body>
+      <body className={`antialiased`}>{children}</body>
     </html>
   )
 }
