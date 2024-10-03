@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import Nav from '@/components/Nav'
 
 export const metadata: Metadata = {
   title: 'Hours Counter',
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`antialiased`}>{children}</body>
+      <body className='antialiased flex'>
+        <Nav />
+        {children}
+        </body>
     </html>
   )
 }
