@@ -27,6 +27,9 @@ export default function Nav() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
+  if (typeof window === 'undefined') return null
+  
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768)
