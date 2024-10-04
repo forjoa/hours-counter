@@ -26,11 +26,10 @@ const navLinks: NavLink[] = [
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
-  if (typeof window === 'undefined') return null
-  
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    setIsClient(true)
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768)
     }
@@ -77,6 +76,8 @@ export default function Nav() {
       </div>
     </>
   )
+
+  if (!isClient) return null
 
   return (
     <>
