@@ -1,7 +1,9 @@
+import Main from "@/components/ui/Main";
+
 export default function Dashboard() {
   return (
-    <div>
+    <Main>
       <h1>Dashboard</h1>
-    </div>
+    </Main>
   )
 }
