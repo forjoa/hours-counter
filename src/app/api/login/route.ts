@@ -1,8 +1,11 @@
 import { turso } from '@/core/db'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
+import { ApiResponse } from '@/core/types'
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request
+): Promise<NextResponse<ApiResponse>> {
   const formData = await request.formData()
   const mail = formData.get('mail') as string
   const password = formData.get('password') as string
@@ -22,5 +25,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Wrong password', success: false })
   }
 
-  return NextResponse.json({ mail, password })
+  return NextResponse.json({ message: 'Login successful', success: true })
 }
