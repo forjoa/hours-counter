@@ -18,9 +18,10 @@ export function middleware(request: NextRequest) {
 
 // Esta función es un placeholder. Deberías implementarla según tu lógica de autenticación
 function checkAuthentication(request: NextRequest): boolean {
+  const token = request.cookies.get('auth-token')
   // Aquí iría tu lógica para verificar si el usuario está autenticado
   // Por ejemplo, podrías verificar una cookie o un token en el header
-  console.log(request)  
+  console.log(token)
   return true // Cambia esto según tu implementación
 }
 
