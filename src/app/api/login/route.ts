@@ -3,11 +3,11 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import { ApiResponse, User } from '@/core/types'
 import { cookies } from 'next/headers'
-import jwt from 'jsonwebtoken'
+import { SignJWT } from 'jose' 
 
 export async function POST(
   request: Request
-): Promise<NextResponse<ApiResponse>> {
+): Promise<NextResponse<ApiResponse | unknown>> {
   const cookiesStore = cookies()
   const formData = await request.formData()
 
@@ -31,9 +31,12 @@ export async function POST(
 
   delete userInDb.password
 
-  const token = jwt.sign(userInDb, process.env.SIGNATURE as string)
+  const token = await new SignJWT({ ...userInDb })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('2h') 
+    .sign(new TextEncoder().encode(process.env.SIGNATURE))
 
   cookiesStore.set('user', JSON.stringify(token))
 
-  return NextResponse.json({ message: 'Login successful', success: true })
+  return NextResponse.redirect(new URL('/', request.url))
 }
