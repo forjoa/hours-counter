@@ -1,12 +1,10 @@
 import { turso } from '@/core/db'
 import { User } from '@/core/types'
 import { jwtVerify } from 'jose'
-import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
-  const cookiesStore = await cookies()
-  const token = cookiesStore.get('user')?.value
+export async function GET(request: NextRequest) {
+  const token = request.cookies.get('user')?.value
 
   const secret = new TextEncoder().encode(process.env.SIGNATURE)
 
