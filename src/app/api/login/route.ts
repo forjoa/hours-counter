@@ -8,7 +8,7 @@ import { SignJWT } from 'jose'
 export async function POST(
   request: Request
 ): Promise<NextResponse<ApiResponse | unknown>> {
-  const cookiesStore = cookies()
+  const cookiesStore = await cookies()
   const formData = await request.formData()
 
   const mail = formData.get('mail') as string

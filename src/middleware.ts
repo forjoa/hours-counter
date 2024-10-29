@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
 }
 
 async function checkAuthentication(request: NextRequest): Promise<boolean> {
-  const cookiesStore = cookies()
+  const cookiesStore = await cookies()
   const token = cookiesStore.get('user')?.value
 
   if (
