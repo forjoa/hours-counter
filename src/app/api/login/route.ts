@@ -22,11 +22,13 @@ export async function POST(
   const userInDb = rows[0] as unknown as User
 
   if (!userInDb) {
-    return NextResponse.redirect(new URL('/login?error=n_u', request.url))
+    cookiesStore.set('loginError', 'n_u', { maxAge: 30 })
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 
   if (!(await bcrypt.compare(password, userInDb.password as string))) {
-    return NextResponse.redirect(new URL('/login?error=w_p', request.url))
+    cookiesStore.set('loginError', 'w_p', { maxAge: 30 }) 
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 
   delete userInDb.password
@@ -37,6 +39,7 @@ export async function POST(
     .sign(new TextEncoder().encode(process.env.SIGNATURE))
 
   cookiesStore.set('user', JSON.stringify(token))
+  cookiesStore.delete('loginError')
 
   return NextResponse.redirect(new URL('/', request.url))
 }
