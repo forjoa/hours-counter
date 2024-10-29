@@ -17,4 +17,5 @@ export interface WorkCenter {
   workcenterid?: number
   name: string
   userid: number
+  createdat: string
 }
