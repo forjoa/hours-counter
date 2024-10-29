@@ -1,13 +1,13 @@
 import { turso } from '@/core/db'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
-import { ApiResponse, User } from '@/core/types'
+import { User } from '@/core/types'
 import { cookies } from 'next/headers'
 import { SignJWT } from 'jose'
 
 export async function POST(
   request: Request
-): Promise<NextResponse<ApiResponse | unknown>> {
+) {
   const cookiesStore = await cookies()
   const formData = await request.formData()
 
@@ -41,5 +41,5 @@ export async function POST(
   cookiesStore.set('user', JSON.stringify(token))
   cookiesStore.delete('loginError')
 
-  return NextResponse.redirect(new URL('/', request.url))
+  return Response.redirect(new URL('/', request.url))
 }
