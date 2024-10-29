@@ -12,3 +12,9 @@ export interface User {
   createdat?: string
   updatedat?: string
 }
+
+export interface WorkCenter {
+  workcenterid?: number
+  name: string
+  userid: number
+}
