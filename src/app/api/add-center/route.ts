@@ -2,7 +2,6 @@ import { turso } from '@/core/db'
 import { User } from '@/core/types'
 import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
   const cookiesStore = await cookies()
@@ -25,7 +24,7 @@ export async function POST(request: Request) {
 
   if (rows.length > 0) {
     cookiesStore.set('centerError', 'Este centro ya existe', { maxAge: 30 })
-    return NextResponse.redirect(new URL('/new-center', request.url))
+    return Response.redirect(new URL('/new-center', request.url))
   }
 
   await turso.execute({
@@ -34,5 +33,5 @@ export async function POST(request: Request) {
   })
 
   cookiesStore.set('centerError', '', { maxAge: 30 })
-  return NextResponse.redirect(new URL('/', request.url))
+  return Response.redirect(new URL('/', request.url))
 }
