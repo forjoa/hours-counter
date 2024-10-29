@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import { ApiResponse, User } from '@/core/types'
 import { cookies } from 'next/headers'
-import { SignJWT } from 'jose' 
+import { SignJWT } from 'jose'
 
 export async function POST(
   request: Request
@@ -22,18 +22,18 @@ export async function POST(
   const userInDb = rows[0] as unknown as User
 
   if (!userInDb) {
-    return NextResponse.json({ message: 'No user found', success: false })
+    return NextResponse.redirect(new URL('/login?error=n_u', request.url))
   }
 
   if (!(await bcrypt.compare(password, userInDb.password as string))) {
-    return NextResponse.json({ message: 'Wrong password', success: false })
+    return NextResponse.redirect(new URL('/login?error=w_p', request.url))
   }
 
   delete userInDb.password
 
   const token = await new SignJWT({ ...userInDb })
     .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('2h') 
+    .setExpirationTime('2h')
     .sign(new TextEncoder().encode(process.env.SIGNATURE))
 
   cookiesStore.set('user', JSON.stringify(token))
