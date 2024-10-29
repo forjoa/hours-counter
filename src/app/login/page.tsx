@@ -1,10 +1,28 @@
 import Modal from '@/components/ui/Modal'
+import { cookies } from 'next/headers'
 
-export default function Login() {
+export default async function Login() {
+  const cookiesStore = await cookies()
+  
+  const error = cookiesStore.get('loginError')
+
+  const getErrorMessage = (errorCode: string) => {
+    const errors = {
+      'n_u': 'Usuario no encontrado',
+      'w_p': 'Contraseña incorrecta'
+    }
+    return errors[errorCode as keyof typeof errors]
+  }
+  
   return (
     <Modal>
       <h1 className='font-bold text-lg'>Login</h1>
-      <form action='/api/login' method='post' className='flex flex-col gap-4 mt-4'>
+      {error && <p className='text-red-500'>{getErrorMessage(error.value)}</p>}
+      <form
+        action='/api/login'
+        method='post'
+        className='flex flex-col gap-4 mt-4'
+      >
         <label
           htmlFor='mail'
           className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
