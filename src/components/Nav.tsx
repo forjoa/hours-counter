@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import {
   CirclePlus,
   House,
-  LayoutDashboard,
   LogOut,
   Menu,
   X,
@@ -19,8 +18,7 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { href: '/', icon: House, text: 'Inicio' },
-  { href: '/dashboard', icon: LayoutDashboard, text: 'Dashboard' },
-  { href: '/dashboard/new-entry', icon: CirclePlus, text: 'Añadir' },
+  { href: '/new-entry', icon: CirclePlus, text: 'Añadir' },
 ]
 
 export default function Nav() {
