@@ -33,7 +33,7 @@ export async function POST(
 
   const token = await new SignJWT({ ...userInDb })
     .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('2h')
+    .setExpirationTime('1y')
     .sign(new TextEncoder().encode(process.env.SIGNATURE))
 
   cookiesStore.set('user', JSON.stringify(token))
