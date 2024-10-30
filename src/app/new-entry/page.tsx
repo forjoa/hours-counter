@@ -1,6 +1,53 @@
+'use client'
+import Main from '@/components/ui/Main'
 import Modal from '@/components/ui/Modal'
+import { WorkCenter } from '@/core/types'
+import { useEffect, useState } from 'react'
 
 export default function NewEntry() {
+  const [centers, setCenters] = useState<WorkCenter[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchCenters = async () => {
+      try {
+        const response = await fetch('/api/get-centers', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+
+        const data = await response.json()
+        setCenters(data)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error fetching data')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCenters()
+  }, [])
+
+  if (isLoading)
+    return (
+      <Main>
+        <div>Cargando...</div>
+      </Main>
+    )
+  if (error)
+    return (
+      <Main>
+        <div>Error: {error}</div>
+      </Main>
+    )
+
   return (
     <Modal>
       <h1 className='mt-2 font-bold'>Añadir horas de trabajo</h1>
@@ -72,17 +119,15 @@ export default function NewEntry() {
             className='mt-1.5 w-full p-3 rounded-lg border border-gray-200 text-gray-700 sm:text-sm'
           >
             <option value=''>Selecciona un centro</option>
-            <option value='JM'>John Mayer</option>
-            <option value='SRV'>Stevie Ray Vaughn</option>
-            <option value='JH'>Jimi Hendrix</option>
-            <option value='BBK'>B.B King</option>
-            <option value='AK'>Albert King</option>
-            <option value='BG'>Buddy Guy</option>
-            <option value='EC'>Eric Clapton</option>
+            {centers.map((center: WorkCenter) => (
+              <option key={center.workcenterid} value={center.workcenterid}>
+                {center.name}
+              </option>
+            ))}
           </select>
         </div>
 
-        <span className='text-zinc-500'>
+        <span className='text-zinc-500 text-sm'>
           * El siguiente campo no es obligatorio.
         </span>
         <label
