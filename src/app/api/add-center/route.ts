@@ -33,5 +33,5 @@ export async function POST(request: Request) {
   })
 
   cookiesStore.set('centerError', '', { maxAge: 30 })
-  return Response.redirect(new URL('/', request.url))
+  return Response.redirect(new URL('/center-list', request.url))
 }
