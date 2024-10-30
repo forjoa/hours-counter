@@ -19,7 +19,7 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { href: '/', icon: House, text: 'Inicio' },
+  { href: '/home', icon: House, text: 'Inicio' },
   { href: '/new-entry', icon: CirclePlus, text: 'Añadir horas' },
   { href: '/new-center', icon: BriefcaseBusiness, text: 'Añadir centro' },
   { href: '/center-list', icon: List, text: 'Lista de centros' },

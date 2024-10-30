@@ -41,5 +41,5 @@ export async function POST(
   cookiesStore.set('user', JSON.stringify(token))
   cookiesStore.delete('loginError')
 
-  return Response.redirect(new URL('/', request.url))
+  return Response.redirect(new URL('/home', request.url))
 }
