@@ -57,7 +57,7 @@ export default function NewEntry() {
       </span>
 
       <form
-        action='/api/add-center'
+        action='/api/record'
         method='post'
         className='flex flex-col gap-4 mt-2'
       >
@@ -70,6 +70,7 @@ export default function NewEntry() {
             id='date'
             placeholder='Fecha'
             name='date'
+            required
             className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
           />
 
@@ -87,6 +88,7 @@ export default function NewEntry() {
             id='starthour'
             placeholder='Fecha'
             name='starthour'
+            required
             className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
           />
 
@@ -104,6 +106,7 @@ export default function NewEntry() {
             id='finishhour'
             placeholder='Fecha'
             name='finishhour'
+            required
             className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
           />
 
@@ -114,6 +117,7 @@ export default function NewEntry() {
 
         <div>
           <select
+            required
             name='workcenter'
             id='workcenter'
             className='mt-1.5 w-full p-3 rounded-lg border border-gray-200 text-gray-700 sm:text-sm'
