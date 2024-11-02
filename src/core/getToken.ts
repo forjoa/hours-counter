@@ -16,7 +16,7 @@ export async function getUserFromToken(request?: NextRequest) {
         const {payload} = await jwtVerify(token.split('"').join(''), secret)
 
         return payload as unknown as User
-    } catch (error) {
-        return error
+    } catch {
+        return null
     }
 }
