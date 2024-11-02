@@ -7,7 +7,7 @@ export default function Layout({
 }>) {
     return (
         <Main>
-            <section className='border border-zinc-200 p-2 rounded'>
+            <section className='border border-zinc-200 p-2 rounded mt-4'>
                 <header>
                     <h1 className='font-bold'>Promedio de horas semanales</h1>
                 </header>
@@ -17,7 +17,7 @@ export default function Layout({
                     {/*number of average weekly hours*/}
                 </main>
             </section>
-            <section className='border border-zinc-200 p-2 rounded'>
+            <section className='border border-zinc-200 p-2 rounded mt-4'>
                 <header>
                     <h1 className='font-bold'>Total de horas este mes</h1>
                 </header>
