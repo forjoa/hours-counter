@@ -1,6 +1,10 @@
 import Main from "@/components/ui/Main";
 
-export default function Layout() {
+export default function Layout({
+                                   children,
+                               }: Readonly<{
+    children: React.ReactNode
+}>) {
     return (
         <Main>
             <div className='border border-zinc-200 p-2 rounded'>
@@ -15,6 +19,7 @@ export default function Layout() {
                     className='text-zinc-500'>Número total de horas trabajas en el mes.</span>
                 {/*number of total monthly hours*/}
             </div>
+            {children}
         </Main>
     )
 }
