@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
         AND h.day LIKE ?
     `;
 
-    let args = [user.userid as number, `${month}%`];
+    const args = [user.userid as number, `${month}%`];
 
     if (workcenterid) {
         query += ' AND h.workcenterid = ?';
