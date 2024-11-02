@@ -1,23 +1,16 @@
-import { turso } from '@/core/db'
-import { User } from '@/core/types'
-import { jwtVerify } from 'jose'
-import { NextRequest, NextResponse } from 'next/server'
+import {turso} from '@/core/db'
+import {NextRequest, NextResponse} from 'next/server'
+import {getUserFromToken} from '@/core/getToken'
 
 export async function GET(request: NextRequest) {
-  const token = request.cookies.get('user')?.value
+    const user = await getUserFromToken(request)
 
-  const secret = new TextEncoder().encode(process.env.SIGNATURE)
+    if (!user) return
 
-  if (!token) return
+    const {rows} = await turso.execute({
+        sql: 'SELECT * FROM workcenter WHERE userid = ?',
+        args: [user.userid as number],
+    })
 
-  const { payload } = await jwtVerify(token.split('"').join(''), secret)
-
-  const user = payload as unknown as User
-
-  const { rows } = await turso.execute({
-    sql: 'SELECT * FROM workcenter WHERE userid = ?',
-    args: [user.userid as number],
-  })
-
-  return NextResponse.json(rows)
+    return NextResponse.json(rows)
 }
