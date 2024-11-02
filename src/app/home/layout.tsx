@@ -7,18 +7,26 @@ export default function Layout({
 }>) {
     return (
         <Main>
-            <div className='border border-zinc-200 p-2 rounded'>
-                <h1 className='font-bold'>Promedio de horas semanales</h1>
+            <section className='border border-zinc-200 p-2 rounded'>
+                <header>
+                    <h1 className='font-bold'>Promedio de horas semanales</h1>
+                </header>
+                <main>
                 <span
                     className='text-zinc-500'>Este es el promedio de las horas que has trabajado a la semana este mes.</span>
-                {/*number of average weekly hours*/}
-            </div>
-            <div className='border border-zinc-200 p-2 rounded'>
-                <h1 className='font-bold'>Total de horas este mes</h1>
+                    {/*number of average weekly hours*/}
+                </main>
+            </section>
+            <section className='border border-zinc-200 p-2 rounded'>
+                <header>
+                    <h1 className='font-bold'>Total de horas este mes</h1>
+                </header>
+                <main>
                 <span
                     className='text-zinc-500'>Número total de horas trabajas en el mes.</span>
-                {/*number of total monthly hours*/}
-            </div>
+                    {/*number of total monthly hours*/}
+                </main>
+            </section>
             {children}
         </Main>
     )
