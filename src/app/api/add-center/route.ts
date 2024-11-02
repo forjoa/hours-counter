@@ -1,21 +1,15 @@
 import { turso } from '@/core/db'
-import { User } from '@/core/types'
-import { jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
+import { getUserFromToken } from '@/core/getToken'
 
 export async function POST(request: Request) {
   const cookiesStore = await cookies()
   const formData = await request.formData()
-  const token = cookiesStore.get('user')?.value
   const newCenter = formData.get('center') as string
 
-  const secret = new TextEncoder().encode(process.env.SIGNATURE)
+  const user = await getUserFromToken()
 
-  if (!token) return
-
-  const { payload } = await jwtVerify(token.split('"').join(''), secret)
-
-  const user = payload as unknown as User
+  if (!user) return
 
   const { rows } = await turso.execute({
     sql: 'SELECT * FROM workcenter WHERE LOWER(name) = LOWER(?) AND userid = ?',
