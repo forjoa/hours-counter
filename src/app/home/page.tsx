@@ -1,10 +1,11 @@
 'use client'
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import {useSearchParams} from "next/navigation";
+import {useEffect, useState} from "react";
+import {Hour} from '@/core/types'
 
 export default function Home() {
     const pathname = useSearchParams();
-    const [hours, setHours] = useState<any[]>()
+    const [hours, setHours] = useState<Hour[]>()
 
     useEffect(() => {
         const fetchHours = async () => {
@@ -14,14 +15,14 @@ export default function Home() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ month })
+                body: JSON.stringify({month})
             });
             const response = await res.json();
             setHours(response)
         }
 
         fetchHours().then()
-    }, []);
+    }, [pathname]);
 
     return (
         <div className="overflow-x-auto rounded-lg border border-gray-200 p-2">
@@ -42,7 +43,7 @@ export default function Home() {
                 </thead>
 
                 <tbody className="divide-y divide-gray-200">
-                {hours && hours.length > 0 && hours.map((hour: any) => {
+                {hours && hours.length > 0 && hours.map((hour: Hour) => {
                     const [startHours, startMinutes] = hour.starttime.split(':').map(Number)
                     const [endHours, endMinutes] = hour.endtime.split(':').map(Number)
 
