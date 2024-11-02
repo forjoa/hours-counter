@@ -17,6 +17,6 @@ export async function getUserFromToken(request?: NextRequest) {
 
         return payload as unknown as User
     } catch (error) {
-        return null
+        return error
     }
 }
