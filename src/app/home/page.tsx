@@ -3,7 +3,6 @@ import {useSearchParams} from "next/navigation";
 import {useEffect, useState, Suspense} from "react";
 import {Hour} from '@/core/types'
 
-// Componente de tabla separado
 function HoursTable({hours}: { hours: Hour[] }) {
     return (
         <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -67,7 +66,6 @@ function HoursTable({hours}: { hours: Hour[] }) {
     )
 }
 
-// Componente que maneja los datos
 function HoursContent() {
     const searchParams = useSearchParams();
     const [hours, setHours] = useState<Hour[]>()
@@ -90,7 +88,7 @@ function HoursContent() {
     }, [searchParams]);
 
     return (
-        <div className="overflow-x-auto rounded-lg border border-gray-200 p-2">
+        <div className="overflow-x-auto rounded-lg border border-gray-200 p-2 mt-4">
             <header>
                 <h1 className='font-bold'>Listado de horas por centro</h1>
                 <span className='text-zinc-500'>
@@ -102,11 +100,10 @@ function HoursContent() {
     )
 }
 
-// Componente principal
 export default function Home() {
     return (
         <Suspense fallback={
-            <div className="overflow-x-auto rounded-lg border border-gray-200 p-2">
+            <div className="overflow-x-auto rounded-lg border border-gray-200 p-2 mt-4">
                 <p>Cargando datos...</p>
             </div>
         }>
