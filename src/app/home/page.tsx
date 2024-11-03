@@ -156,7 +156,7 @@ function HoursContent() {
                 <span className="text-zinc-500">
                     Las horas mostradas son las del centro y mes seleccionados. Por defecto se muestran todas las horas en cualquier centro del mes actual
                 </span>
-                <section className="flex flex-col mt-2 gap-2 items-end w-full justify-center">
+                <section className="flex mt-2">
                     <label
                         className="block overflow-hidden rounded-md px-3 py-2 focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
                         <span className="text-gray-700">Mes</span>
