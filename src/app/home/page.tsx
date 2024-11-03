@@ -1,5 +1,5 @@
 'use client'
-import {useSearchParams} from "next/navigation";
+import {useSearchParams, useRouter} from "next/navigation";
 import {useEffect, useState, Suspense} from "react";
 import {Hour} from '@/core/types'
 
@@ -70,17 +70,30 @@ function HoursTable({hours}: { hours: Hour[] }) {
 
 function HoursContent() {
     const searchParams = useSearchParams();
+    const router = useRouter()
     const [hours, setHours] = useState<Hour[]>()
 
     useEffect(() => {
         const fetchHours = async () => {
             const month = searchParams.get('month') != null ? searchParams.get('month') : new Date().toISOString().slice(0, 7)
+            const workcenterid = searchParams.get('workcenterid')
+            let body
+            if (workcenterid) {
+                body = {
+                    month,
+                    workcenterid
+                }
+            } else {
+                body = {
+                    month
+                }
+            }
             const res = await fetch(`/api/get-hours`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({month})
+                body: JSON.stringify(body)
             });
             const response = await res.json();
             setHours(response)
@@ -96,6 +109,18 @@ function HoursContent() {
                 <span className='text-zinc-500'>
                     Las horas mostradas son las del centro y mes seleccionados.
                 </span>
+                <nav className='flex gap-4 items-center'>
+                    <label
+                        className="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                    >
+                        <span className="text-gray-700">Mes</span>
+                        <input
+                            type="month"
+                            className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                            onChange={(e) => router.push('?month='+e.target.value.toString())}
+                        />
+                    </label>
+                </nav>
             </header>
             <HoursTable hours={hours ?? []}/>
         </div>
