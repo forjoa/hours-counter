@@ -31,3 +31,14 @@ export interface Hour {
     createdat: string;
     name: string;
 }
+
+export interface WorkShift {
+    hourId: number;
+    day: string;
+    startTime: string;
+    endTime: string;
+    workCenterId: number;
+    userId: number;
+    annotations?: string;
+    createdAt: string;
+}
