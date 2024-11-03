@@ -20,18 +20,6 @@ export interface WorkCenter {
     createdat: string
 }
 
-export interface Hour {
-    hourid: number;
-    day: string;
-    starttime: string;
-    endtime: string;
-    workcenterid: number;
-    userid: number;
-    annotations: string;
-    createdat: string;
-    name: string;
-}
-
 export interface WorkShift {
     hourId: number;
     day: string;
@@ -41,4 +29,8 @@ export interface WorkShift {
     userId: number;
     annotations?: string;
     createdAt: string;
+}
+
+export interface Hour extends WorkShift {
+    name: string;
 }
