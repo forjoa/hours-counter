@@ -189,7 +189,7 @@ function HoursContent() {
                 </nav>
             </header>
             <HoursTable hours={hours ?? []}/>
-            <button onClick={e => window.location.href = '/home'} className='bg-black text-white py-2 px-4 rounded mt-2'>
+            <button onClick={() => window.location.href = '/home'} className='bg-black text-white py-2 px-4 rounded mt-2'>
                 Ver todas las horas
             </button>
         </div>
