@@ -174,9 +174,9 @@ function HoursContent() {
                                     <p
                                         key={center.workcenterid}
                                         onClick={() => handleCenterClick(center.workcenterid as number)}
-                                        className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${
+                                        className={`relative shrink-0 px-1 pb-4 text-sm font-medium ${
                                             Number(selectedCenterId) === center.workcenterid
-                                                ? 'border-sky-500 text-sky-600'
+                                                ? 'font-bold text-black after:content-[""] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-full after:bg-black after:rounded-t-md'
                                                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
                                         }`}
                                     >
