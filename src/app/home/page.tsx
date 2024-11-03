@@ -138,7 +138,12 @@ function HoursContent() {
 
     const handleMonthChange = (e: ChangeEvent<HTMLInputElement>) => {
         const month = e.target.value;
-        router.push(`?month=${month}`);
+        const centerId = searchParams.get('workcenterid');
+        if (!centerId) {
+            router.push(`?month=${month}`);
+        } else {
+            router.push(`?month=${month}&workcenterid=${centerId}`);
+        }
     };
 
     const handleCenterClick = (centerId: number) => {
@@ -189,7 +194,8 @@ function HoursContent() {
                 </nav>
             </header>
             <HoursTable hours={hours ?? []}/>
-            <button onClick={() => window.location.href = '/home'} className='bg-black text-white py-2 px-4 rounded mt-2'>
+            <button onClick={() => window.location.href = '/home'}
+                    className='bg-black text-white py-2 px-4 rounded mt-2'>
                 Ver todas las horas
             </button>
         </div>
