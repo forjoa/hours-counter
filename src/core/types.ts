@@ -21,14 +21,14 @@ export interface WorkCenter {
 }
 
 export interface WorkShift {
-    hourId: number;
+    hourid: number;
     day: string;
-    startTime: string;
-    endTime: string;
-    workCenterId: number;
-    userId: number;
+    starttime: string;
+    endtime: string;
+    workcenterid: number;
+    userid: number;
     annotations?: string;
-    createdAt: string;
+    createdat: string;
 }
 
 export interface Hour extends WorkShift {
