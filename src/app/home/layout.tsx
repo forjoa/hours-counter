@@ -1,9 +1,10 @@
 import Main from "@/components/ui/Main";
+import { ReactNode } from "react";
 
 export default function Layout({
                                    children,
                                }: Readonly<{
-    children: React.ReactNode
+    children: ReactNode
 }>) {
     return (
         <Main>
