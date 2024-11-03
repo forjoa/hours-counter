@@ -139,11 +139,7 @@ function HoursContent() {
     const handleMonthChange = (e: ChangeEvent<HTMLInputElement>) => {
         const month = e.target.value;
         const centerId = searchParams.get('workcenterid');
-        if (!centerId) {
-            router.push(`?month=${month}`);
-        } else {
-            router.push(`?month=${month}&workcenterid=${centerId}`);
-        }
+        router.push(`?month=${month}` + (centerId ? `&workcenterid=${centerId}` : ''))
     };
 
     const handleCenterClick = (centerId: number) => {
@@ -154,7 +150,7 @@ function HoursContent() {
     const selectedCenterId = searchParams.get('workcenterid');
 
     return (
-        <div className="overflow-x-auto rounded border border-gray-200 p-2 mt-4">
+        <div className="overflow-x-auto rounded border border-gray-200 mt-4 p-4 shadow">
             <header>
                 <h1 className="font-bold">Listado de horas por centro</h1>
                 <span className="text-zinc-500">
@@ -179,7 +175,7 @@ function HoursContent() {
                                     <p
                                         key={center.workcenterid}
                                         onClick={() => handleCenterClick(center.workcenterid as number)}
-                                        className={`relative shrink-0 px-1 pb-4 text-sm font-medium ${
+                                        className={`relative shrink-0 px-1 pb-4 text-sm font-medium cursor-pointer ${
                                             Number(selectedCenterId) === center.workcenterid
                                                 ? 'font-bold text-black after:content-[""] after:absolute after:left-0 after:bottom-0 after:h-1 after:w-full after:bg-black after:rounded-t-md'
                                                 : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
