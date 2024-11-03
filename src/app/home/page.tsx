@@ -1,7 +1,8 @@
 'use client'
 import {useSearchParams, useRouter} from "next/navigation";
-import {useEffect, useState, Suspense} from "react";
-import {Hour} from '@/core/types'
+import {useEffect, useState, Suspense, ChangeEvent} from "react";
+import {Hour, WorkCenter} from '@/core/types'
+import Main from "@/components/ui/Main";
 
 function HoursTable({hours}: { hours: Hour[] }) {
     return (
@@ -70,56 +71,121 @@ function HoursTable({hours}: { hours: Hour[] }) {
 
 function HoursContent() {
     const searchParams = useSearchParams();
-    const router = useRouter()
-    const [hours, setHours] = useState<Hour[]>()
+    const router = useRouter();
+    const [hours, setHours] = useState([]);
+    const [centers, setCenters] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchCenters = async () => {
+            try {
+                const response = await fetch('/api/get-centers', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setCenters(data);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Error fetching data');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchCenters();
+    }, []);
 
     useEffect(() => {
         const fetchHours = async () => {
-            const month = searchParams.get('month') != null ? searchParams.get('month') : new Date().toISOString().slice(0, 7)
-            const workcenterid = searchParams.get('workcenterid')
-            let body
-            if (workcenterid) {
-                body = {
-                    month,
-                    workcenterid
-                }
-            } else {
-                body = {
-                    month
-                }
-            }
+            const month = searchParams.get('month') ?? new Date().toISOString().slice(0, 7);
+            const workcenterid = searchParams.get('workcenterid');
+            const body = workcenterid ? {month, workcenterid} : {month};
+
             const res = await fetch(`/api/get-hours`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(body)
+                body: JSON.stringify(body),
             });
             const response = await res.json();
-            setHours(response)
-        }
+            setHours(response);
+        };
 
-        fetchHours().then()
+        fetchHours();
     }, [searchParams]);
+
+    if (isLoading)
+        return (
+            <Main>
+                <div>Cargando...</div>
+            </Main>
+        );
+    if (error)
+        return (
+            <Main>
+                <div>Error: {error}</div>
+            </Main>
+        );
+
+    const handleMonthChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const month = e.target.value;
+        router.push(`?month=${month}`);
+    };
+
+    const handleCenterClick = (centerId: number) => {
+        const month = searchParams.get('month') || new Date().toISOString().slice(0, 7);
+        router.push(`?month=${month}&workcenterid=${centerId}`);
+    };
+
+    const selectedCenterId = searchParams.get('workcenterid');
 
     return (
         <div className="overflow-x-auto rounded border border-gray-200 p-2 mt-4">
             <header>
-                <h1 className='font-bold'>Listado de horas por centro</h1>
-                <span className='text-zinc-500'>
+                <h1 className="font-bold">Listado de horas por centro</h1>
+                <span className="text-zinc-500">
                     Las horas mostradas son las del centro y mes seleccionados.
                 </span>
-                <nav className='flex gap-4 items-center'>
+                <section className="flex gap-4 items-center w-full justify-end">
                     <label
-                        className="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                    >
+                        className="block overflow-hidden rounded-md px-3 py-2 focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
                         <span className="text-gray-700">Mes</span>
                         <input
                             type="month"
                             className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
-                            onChange={(e) => router.push('?month='+e.target.value.toString())}
+                            onChange={handleMonthChange}
                         />
                     </label>
+                </section>
+                <nav className="mt-2 overflow-x-auto">
+                    <div className="block">
+                        <div className="border-b border-gray-200">
+                            <nav className="-mb-px flex gap-6" aria-label="Tabs">
+                                {centers.map((center: WorkCenter) => (
+                                    <p
+                                        key={center.workcenterid}
+                                        onClick={() => handleCenterClick(center.workcenterid as number)}
+                                        className={`shrink-0 border-b-2 px-1 pb-4 text-sm font-medium ${
+                                            Number(selectedCenterId) === center.workcenterid
+                                                ? 'border-sky-500 text-sky-600'
+                                                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                                        }`}
+                                    >
+                                        {center.name}
+                                    </p>
+                                ))}
+                            </nav>
+                        </div>
+                    </div>
                 </nav>
             </header>
             <HoursTable hours={hours ?? []}/>
