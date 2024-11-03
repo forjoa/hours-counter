@@ -39,8 +39,8 @@ function HoursTable({hours}: { hours: Hour[] }) {
 
                     const date = new Date(hour.day)
                     const dia = dias[date.getDay()]
-                    const numero = date.getDate()
-                    const formattedDate = `${dia} ${numero}`
+                    const number = date.getDate()
+                    const formattedDate = `${dia} ${number}`
 
                     return (
                         <tr key={hour.hourid}>
