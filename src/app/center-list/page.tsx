@@ -63,7 +63,7 @@ export default function NewEntry() {
                 Centro
               </th>
               <th className='whitespace-nowrap px-4 py-2 font-medium text-gray-900'>
-                Creación
+                Acciones
               </th>
             </tr>
           </thead>
@@ -74,8 +74,13 @@ export default function NewEntry() {
                 <td className='whitespace-nowrap px-4 py-2 font-medium text-gray-900'>
                   {center.name}
                 </td>
-                <td className='whitespace-nowrap px-4 py-2 text-gray-700'>
-                  {new Date(center.createdat).toLocaleDateString()}
+                <td className='whitespace-nowrap px-4 py-2 flex justify-center gap-2'>
+                  <button className='py-1 px-2 bg-blue-500 text-white rounded'>
+                    Editar
+                  </button>
+                  <button className='py-1 px-2 bg-red-500 text-white rounded'>
+                    Eliminar
+                  </button>
                 </td>
               </tr>
             ))}
