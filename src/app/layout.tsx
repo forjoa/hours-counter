@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className='antialiased flex'>
         <Nav />
         {children}
-        </body>
+      </body>
     </html>
   )
 }
