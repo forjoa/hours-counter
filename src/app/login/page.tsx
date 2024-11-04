@@ -3,17 +3,17 @@ import { cookies } from 'next/headers'
 
 export default async function Login() {
   const cookiesStore = await cookies()
-  
+
   const error = cookiesStore.get('loginError')
 
   const getErrorMessage = (errorCode: string) => {
     const errors = {
-      'n_u': 'Usuario no encontrado',
-      'w_p': 'Contraseña incorrecta'
+      n_u: 'Usuario no encontrado',
+      w_p: 'Contraseña incorrecta',
     }
     return errors[errorCode as keyof typeof errors]
   }
-  
+
   return (
     <Modal>
       <h1 className='font-bold text-lg'>Login</h1>
