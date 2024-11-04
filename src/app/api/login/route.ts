@@ -5,9 +5,7 @@ import { User } from '@/core/types'
 import { cookies } from 'next/headers'
 import { SignJWT } from 'jose'
 
-export async function POST(
-  request: Request
-) {
+export async function POST(request: Request) {
   const cookiesStore = await cookies()
   const formData = await request.formData()
 
@@ -27,7 +25,7 @@ export async function POST(
   }
 
   if (!(await bcrypt.compare(password, userInDb.password as string))) {
-    cookiesStore.set('loginError', 'w_p', { maxAge: 30 }) 
+    cookiesStore.set('loginError', 'w_p', { maxAge: 30 })
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
