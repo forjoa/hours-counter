@@ -3,13 +3,15 @@ import { cookies } from 'next/headers'
 
 export default async function NewEntry() {
   const cookiesStore = await cookies()
-  
+
   const error = cookiesStore.get('centerError')
 
   return (
     <Modal>
       <h1 className='mt-2 font-bold'>Añadir nuevo centro de trabajo</h1>
-      <span className='text-zinc-500'>Escribe el nombre del nuevo centro de trabajo</span> 
+      <span className='text-zinc-500'>
+        Escribe el nombre del nuevo centro de trabajo
+      </span>
       <form
         action='/api/add-center'
         method='post'
