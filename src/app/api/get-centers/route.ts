@@ -1,16 +1,16 @@
-import {turso} from '@/core/db'
-import {NextRequest, NextResponse} from 'next/server'
-import {getUserFromToken} from '@/core/getToken'
+import { turso } from '@/core/db'
+import { NextRequest, NextResponse } from 'next/server'
+import { getUserFromToken } from '@/core/getToken'
 
 export async function GET(request: NextRequest) {
-    const user = await getUserFromToken(request)
+  const user = await getUserFromToken(request)
 
-    if (!user) return
+  if (!user) return
 
-    const {rows} = await turso.execute({
-        sql: 'SELECT * FROM workcenter WHERE userid = ?',
-        args: [user.userid as number],
-    })
+  const { rows } = await turso.execute({
+    sql: 'SELECT * FROM workcenter WHERE userid = ?',
+    args: [user.userid as number],
+  })
 
-    return NextResponse.json(rows)
+  return NextResponse.json(rows)
 }
