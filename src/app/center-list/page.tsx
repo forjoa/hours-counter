@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import Main from '@/components/ui/Main'
 import { WorkCenter } from '@/core/types'
+import { useRouter } from 'next/navigation'
 
 export default function NewEntry() {
+  const router = useRouter()
   const [centers, setCenters] = useState<WorkCenter[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -75,7 +77,7 @@ export default function NewEntry() {
                   {center.name}
                 </td>
                 <td className='whitespace-nowrap px-4 py-2 flex justify-center gap-2'>
-                  <button className='py-1 px-3 bg-blue-500 text-white rounded'>
+                  <button className='py-1 px-3 bg-blue-500 text-white rounded' onClick={() => router.push(`/center-list/edit-center/${center.workcenterid}`)}>
                     Editar
                   </button>
                   <button className='py-1 px-2 bg-red-500 text-white rounded'>
