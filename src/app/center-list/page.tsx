@@ -77,10 +77,17 @@ export default function NewEntry() {
                   {center.name}
                 </td>
                 <td className='whitespace-nowrap px-4 py-2 flex justify-center gap-2'>
-                  <button className='py-1 px-3 bg-blue-500 text-white rounded' onClick={() => router.push(`/center-list/edit-center/${center.workcenterid}`)}>
+                  <button
+                    className='py-2 px-4 bg-blue-500 text-white rounded transition-all hover:opacity-90'
+                    onClick={() =>
+                      router.push(
+                        `/center-list/edit-center/${center.workcenterid}`
+                      )
+                    }
+                  >
                     Editar
                   </button>
-                  <button className='py-1 px-2 bg-red-500 text-white rounded'>
+                  <button className='py-2 px-4 bg-red-500 text-white rounded transition-all hover:opacity-90'>
                     Eliminar
                   </button>
                 </td>
