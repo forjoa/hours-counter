@@ -75,7 +75,7 @@ export default function NewEntry() {
                   {center.name}
                 </td>
                 <td className='whitespace-nowrap px-4 py-2 flex justify-center gap-2'>
-                  <button className='py-1 px-2 bg-blue-500 text-white rounded'>
+                  <button className='py-1 px-3 bg-blue-500 text-white rounded'>
                     Editar
                   </button>
                   <button className='py-1 px-2 bg-red-500 text-white rounded'>
