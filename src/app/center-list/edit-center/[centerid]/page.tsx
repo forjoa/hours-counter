@@ -1,5 +1,6 @@
 import Modal from '@/components/ui/Modal'
 import {getCenterById} from '@/core/getCenterById'
+import {cookies} from "next/headers";
 
 export default async function Page({
                                        params,
@@ -7,6 +8,9 @@ export default async function Page({
     params: Promise<{ centerid: string }>
 }) {
     const slug = (await params).centerid
+    const cookiesStore = await cookies()
+
+    const error = cookiesStore.get('editCenterError')
 
     const center = await getCenterById(slug)
 
@@ -21,10 +25,16 @@ export default async function Page({
                 method='post'
                 className='flex flex-col gap-4 mt-2'
             >
+                {error && <p className='text-red-500'>{error.value}</p>}
                 <input
                     type='hidden'
                     name='workcenterid'
                     value={center.workcenterid}
+                />
+                <input
+                    type='hidden'
+                    name='userid'
+                    value={center.userid}
                 />
                 <label
                     htmlFor='center'
