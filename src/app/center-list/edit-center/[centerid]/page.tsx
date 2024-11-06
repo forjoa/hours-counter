@@ -49,7 +49,7 @@ export default async function Page({
           </span>
                 </label>
                 <button className='bg-zinc-700 py-2 rounded text-white' type='submit'>
-                    Añadir
+                    Editar
                 </button>
             </form>
         </Modal>
