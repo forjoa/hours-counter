@@ -26,11 +26,6 @@ export default async function Page({
                     name='workcenterid'
                     value={center.workcenterid}
                 />
-                <input
-                    type='hidden'
-                    name='userid'
-                    value={center.userid}
-                />
                 <label
                     htmlFor='center'
                     className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
