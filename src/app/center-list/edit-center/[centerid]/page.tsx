@@ -10,7 +10,7 @@ export default async function Page({
 
   const center = await getCenterById(slug)
   return (
-    <Modal>
+    <Modal route='center-list'>
       <div>My center id: {slug}</div>
       <div>name: {center.name}</div>
       <div>userid: {center.userid}</div>
