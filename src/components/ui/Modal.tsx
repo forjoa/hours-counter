@@ -3,7 +3,7 @@ import { MoveLeft } from 'lucide-react'
 import Link from 'next/link'
 
 interface Props extends PropsWithChildren {
-    route: string
+    route?: string
 }
 
 export default function Modal({children, route}: Props) {
