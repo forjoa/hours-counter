@@ -87,9 +87,12 @@ export default function NewEntry() {
                   >
                     Editar
                   </button>
-                  <button className='py-2 px-4 bg-red-500 text-white rounded transition-all hover:opacity-90'>
+                  <a
+                    href={`/api/delete-center?workcenterid=${center.workcenterid}`}
+                    className='py-2 px-4 bg-red-500 text-white rounded transition-all hover:opacity-90'
+                  >
                     Eliminar
-                  </button>
+                  </a>
                 </td>
               </tr>
             ))}
