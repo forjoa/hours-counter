@@ -8,6 +8,7 @@ import {
   List,
   Menu,
   X,
+  LucideIcon,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -15,7 +16,7 @@ import { usePathname } from 'next/navigation'
 
 interface NavLink {
   href: string
-  icon: React.FC<React.SVGProps<SVGSVGElement>>
+  icon: LucideIcon
   text: string
 }
 
