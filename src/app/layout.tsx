@@ -4,7 +4,7 @@ import Nav from '@/components/Nav'
 
 export const metadata: Metadata = {
   title: 'Hours Counter',
-  description: 'Application to count your working hours',
+  description: 'Aplicación para contabilizar horas de trabajo',
 }
 
 export const viewport: Viewport = {
@@ -20,13 +20,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en'>
+    <html lang='es'>
       <head>
         <link rel='icon' href='/reloj.png' />
       </head>
-      <body className='antialiased flex'>
+      <body className='antialiased flex min-h-screen bg-background'>
         <Nav />
-        {children}
+        <div className="flex-1">
+          {children}
+        </div>
       </body>
     </html>
   )

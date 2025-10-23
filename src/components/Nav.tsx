@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 interface NavLink {
   href: string
@@ -26,9 +27,10 @@ const navLinks: NavLink[] = [
 ]
 
 export default function Nav() {
-  const [isOpen, setIsOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isClient, setIsClient] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
     setIsClient(true)
@@ -40,69 +42,104 @@ export default function Nav() {
     return () => window.removeEventListener('resize', checkIsMobile)
   }, [])
 
-  const toggleMenu = () => setIsOpen(!isOpen)
-
-  const NavContent = () => (
-    <>
-      <div className='flex flex-col gap-4 items-center'>
-        <header className='flex items-center gap-4'>
-          <Image
-            src='/reloj.png'
-            alt='Logo'
-            className='w-8 h-8 rounded-full'
-            width={64}
-            height={64}
-          />
-          <h1 className='font-bold text-black text-lg'>Hours Counter</h1>
-        </header>
-        <ul className='flex flex-col gap-4 text-black w-full'>
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                className='flex align-center gap-2 transition-all hover:gap-3 hover:font-bold'
-                href={link.href}
-                onClick={() => isMobile && setIsOpen(false)}
-              >
-                <link.icon strokeWidth='1.25' />
-                {link.text}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <button className='flex align-center gap-2 text-red-500'>
-          <LogOut strokeWidth='1.25' />
-          Cerrar sesión
-        </button>
-      </div>
-    </>
-  )
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
 
   if (!isClient) return null
 
-  return (
-    <>
-      {isMobile && (
-        <button
-          onClick={toggleMenu}
-          className='fixed top-4 left-4 z-50 p-2 bg-white rounded shadow-md'
-        >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+  const isActiveLink = (href: string) => {
+    if (href === '/home') return pathname === '/home' || pathname === '/'
+    return pathname?.startsWith(href)
+  }
+
+  const NavContent = () => (
+    <div className='flex flex-col h-full bg-white'>
+      <div className="p-6 border-b border-gray-200">
+        <div className='flex items-center gap-3'>
+          <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
+            <Image
+              src='/reloj.png'
+              alt='Logo'
+              className='w-6 h-6'
+              width={24}
+              height={24}
+            />
+          </div>
+          <h1 className='font-semibold text-gray-900 text-lg'>Hours Counter</h1>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto py-4 px-3">
+        <ul className='flex flex-col gap-1'>
+          {navLinks.map((link) => {
+            const isActive = isActiveLink(link.href)
+            return (
+              <li key={link.href}>
+                <Link
+                  className={`flex items-center gap-3 py-2.5 px-4 rounded-lg transition-all ${
+                    isActive
+                      ? 'bg-black text-white'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
+                  href={link.href}
+                >
+                  <link.icon size={20} strokeWidth={2} />
+                  <span className="text-sm font-medium">{link.text}</span>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      <div className="p-3 border-t border-gray-200">
+        <button className='flex items-center gap-3 w-full py-2.5 px-4 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors'>
+          <LogOut size={20} strokeWidth={2} />
+          <span className="text-sm font-medium">Cerrar sesión</span>
         </button>
-      )}
-      <nav
-        className={`
-        ${
-          isMobile
-            ? 'flex flex-col items-center justify-between fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 pt-20 pb-10'
-            : 'flex flex-col items-center justify-between flex-wrap p-6 rounded m-6 bg-white min-h-[calc(100vh-3rem)]'
-        }
-        ${isMobile && !isOpen ? '-translate-x-full' : 'translate-x-0'}
-      `}
-      >
-        {(!isMobile || isOpen) && <NavContent />}
-      </nav>
-    </>
+      </div>
+    </div>
+  )
+
+  if (isMobile) {
+    return (
+      <>
+        <div className="fixed top-4 left-4 z-50">
+          <button
+            onClick={() => setIsOpen(true)}
+            className='p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors shadow-sm'
+          >
+            <Menu size={24} strokeWidth={2} className="text-gray-700" />
+          </button>
+        </div>
+
+        {isOpen && (
+          <>
+            <div
+              className="fixed inset-0 bg-black/50 z-50"
+              onClick={() => setIsOpen(false)}
+            />
+            <div className="fixed left-0 top-0 bottom-0 w-64 z-50 shadow-xl animate-in slide-in-from-left duration-200">
+              <div className="relative h-full">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg transition-colors z-10"
+                >
+                  <X size={20} className="text-gray-700" />
+                </button>
+                <NavContent />
+              </div>
+            </div>
+          </>
+        )}
+      </>
+    )
+  }
+
+  return (
+    <nav className="w-64 fixed left-4 top-4 bottom-4 border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+      <NavContent />
+    </nav>
   )
 }

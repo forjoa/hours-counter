@@ -1,8 +1,8 @@
 'use client'
-import Main from '@/components/ui/Main'
 import Modal from '@/components/ui/Modal'
 import { WorkCenter } from '@/core/types'
 import { useEffect, useState } from 'react'
+import { Calendar, Clock, MapPin } from 'lucide-react'
 
 export default function NewEntry() {
   const [centers, setCenters] = useState<WorkCenter[]>([])
@@ -12,7 +12,7 @@ export default function NewEntry() {
   useEffect(() => {
     const fetchCenters = async () => {
       try {
-        const response = await fetch('/api/get-centers', {
+        const response = await fetch('/api/center', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -37,123 +37,127 @@ export default function NewEntry() {
 
   if (isLoading)
     return (
-      <Main>
-        <div>Cargando...</div>
-      </Main>
+      <Modal>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+        </div>
+      </Modal>
     )
   if (error)
     return (
-      <Main>
-        <div>Error: {error}</div>
-      </Main>
+      <Modal>
+        <div className="text-center py-8 text-red-600">{error}</div>
+      </Modal>
     )
 
   return (
     <Modal>
-      <h1 className='mt-2 font-bold'>Añadir horas de trabajo</h1>
-      <span className='text-zinc-500'>
-        Añade las horas trabajadas y el centro de trabajo en el que las
-        realizaste.
-      </span>
-
-      <form
-        action='/api/record'
-        method='post'
-        className='flex flex-col gap-4 mt-2'
-      >
-        <label
-          htmlFor='date'
-          className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
-        >
-          <input
-            type='date'
-            id='date'
-            placeholder='Fecha'
-            name='date'
-            required
-            className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
-          />
-
-          <span className='absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs'>
-            Fecha
-          </span>
-        </label>
-
-        <label
-          htmlFor='starthour'
-          className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
-        >
-          <input
-            type='time'
-            id='starthour'
-            placeholder='Fecha'
-            name='starthour'
-            required
-            className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
-          />
-
-          <span className='absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs'>
-            Hora de inicio
-          </span>
-        </label>
-
-        <label
-          htmlFor='finishhour'
-          className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
-        >
-          <input
-            type='time'
-            id='finishhour'
-            placeholder='Fecha'
-            name='finishhour'
-            required
-            className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
-          />
-
-          <span className='absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs'>
-            Hora de fin
-          </span>
-        </label>
-
-        <div>
-          <select
-            required
-            name='workcenter'
-            id='workcenter'
-            className='mt-1.5 w-full p-3 rounded-lg border border-gray-200 text-gray-700 sm:text-sm'
-          >
-            <option value=''>Selecciona un centro</option>
-            {centers.map((center: WorkCenter) => (
-              <option key={center.workcenterid} value={center.workcenterid}>
-                {center.name}
-              </option>
-            ))}
-          </select>
+      <div className="w-full max-w-md mx-auto">
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900">Registrar horas</h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Añade un nuevo registro de tiempo trabajado
+          </p>
         </div>
-
-        <span className='text-zinc-500 text-sm'>
-          * El siguiente campo no es obligatorio.
-        </span>
-        <label
-          htmlFor='annotations'
-          className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
+        
+        <form
+          action='/api/record'
+          method='post'
+          className='space-y-5'
         >
-          <textarea
-            id='annotations'
-            placeholder='Nombre del centro'
-            name='annotations'
-            className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
-          />
+          <div>
+            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                Fecha
+              </div>
+            </label>
+            <input
+              type='date'
+              id='date'
+              name='date'
+              required
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+            />
+          </div>
 
-          <span className='absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs'>
-            Anotaciones
-          </span>
-        </label>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="starthour" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  Inicio
+                </div>
+              </label>
+              <input
+                type='time'
+                id='starthour'
+                name='starthour'
+                required
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="finishhour" className="block text-sm font-medium text-gray-700 mb-2">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  Fin
+                </div>
+              </label>
+              <input
+                type='time'
+                id='finishhour'
+                name='finishhour'
+                required
+                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+              />
+            </div>
+          </div>
 
-        <button className='bg-zinc-700 py-2 rounded text-white' type='submit'>
-          Añadir
-        </button>
-      </form>
+          <div>
+            <label htmlFor="workcenter" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4" />
+                Centro de trabajo
+              </div>
+            </label>
+            <select
+              name="workcenter"
+              id="workcenter"
+              required
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all appearance-none cursor-pointer"
+            >
+              <option value="">Selecciona un centro</option>
+              {centers.map((center: WorkCenter) => (
+                <option key={center.workcenterid} value={String(center.workcenterid)}>
+                  {center.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="annotations" className="block text-sm font-medium text-gray-700 mb-2">
+              Anotaciones <span className="text-gray-400 font-normal">(opcional)</span>
+            </label>
+            <textarea
+              id='annotations'
+              name='annotations'
+              placeholder='Detalles adicionales sobre esta jornada...'
+              rows={3}
+              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none"
+            />
+          </div>
+
+          <button
+            type='submit'
+            className="w-full px-4 py-3 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors mt-6"
+          >
+            Registrar horas
+          </button>
+        </form>
+      </div>
     </Modal>
   )
 }

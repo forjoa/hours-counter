@@ -1,5 +1,7 @@
 import Modal from '@/components/ui/Modal'
 import { cookies } from 'next/headers'
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default async function Login() {
   const cookiesStore = await cookies()
@@ -16,49 +18,52 @@ export default async function Login() {
 
   return (
     <Modal>
-      <h1 className='font-bold text-lg'>Login</h1>
-      {error && <p className='text-red-500'>{getErrorMessage(error.value)}</p>}
-      <form
-        action='/api/login'
-        method='post'
-        className='flex flex-col gap-4 mt-4'
-      >
-        <label
-          htmlFor='mail'
-          className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl font-semibold text-foreground">Iniciar sesión</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Ingresa tus credenciales para acceder a tu cuenta
+          </p>
+        </div>
+        
+        {error && (
+          <div className="mb-6 p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
+            {getErrorMessage(error.value)}
+          </div>
+        )}
+        
+        <form
+          action='/api/login'
+          method='post'
+          className='space-y-5'
         >
-          <input
-            type='email'
-            id='mail'
-            placeholder='Email'
-            name='mail'
-            className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
-          />
-
-          <span className='absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs'>
-            Email
-          </span>
-        </label>
-        <label
-          htmlFor='password'
-          className='relative block overflow-hidden rounded-md border border-gray-200 px-3 pt-3 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600'
-        >
-          <input
-            type='password'
-            id='password'
-            placeholder='Password'
-            name='password'
-            className='peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm hover:cursor-text'
-          />
-
-          <span className='absolute start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs'>
-            Password
-          </span>
-        </label>
-        <button className='bg-zinc-700 py-2 rounded text-white' type='submit'>
-          Login
-        </button>
-      </form>
+          <div className="space-y-2">
+            <label htmlFor="mail" className="text-sm font-medium text-foreground">Correo electrónico</label>
+            <Input
+              type='email'
+              id='mail'
+              placeholder='tu@email.com'
+              name='mail'
+              required
+              className="w-full py-5 px-4"
+            />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="password" className="text-sm font-medium text-foreground">Contraseña</label>
+            <Input
+              type='password'
+              id='password'
+              placeholder='••••••••'
+              name='password'
+              required
+              className="w-full py-5 px-4"
+            />
+          </div>
+          <Button type='submit' className="w-full py-5 text-base">
+            Iniciar sesión
+          </Button>
+        </form>
+      </div>
     </Modal>
   )
 }
